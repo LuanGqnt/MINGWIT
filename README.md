@@ -18,7 +18,12 @@ A Java-based virtual pet game that turns everyday pet care into a fun, interacti
 
 ## Getting Started
 
-Coming up soon :)
+Follow the instructions below to get a local copy of **Mingwit** up and running.
+
+```bash
+javac *.java
+java Mingwit
+```
 
 ## Java and OOP Concepts Used
 
