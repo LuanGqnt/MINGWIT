@@ -1,9 +1,9 @@
 public class Pet {
     private String name;
-    private int hunger;     // 0 = full, 100 = starving
-    private int hydration;  // 0 = dehydrated, 100 = fully hydrated
-    private int energy;     // 0 = exhausted, 100 = energetic
-    private int health;     // 0 = critical, 100 = perfect
+    private int hunger; // 0 = starving, 100 = full
+    private int hydration; // 0 = dehydrated, 100 = fully hydrated
+    private int energy; // 0 = exhausted, 100 = energetic
+    private int health; // 0 = critical, 100 = perfect
 
     public Pet(String name) {
         this.name = name;
@@ -14,7 +14,7 @@ public class Pet {
     }
 
     public void feed() {
-        hunger = clamp(hunger - 20);
+        hunger = clamp(hunger + 20);
         energy = clamp(energy + 10);
         updateStatus();
     }
@@ -32,7 +32,7 @@ public class Pet {
         updateStatus();
     }
 
-    //Recomputes health based on hunger, hydration and energy
+    // Recomputes health based on hunger, hydration and energy
     public void updateStatus() {
         if (hunger > 80 || hydration < 20 || energy < 20) {
             health = clamp(health - 10);
@@ -46,16 +46,30 @@ public class Pet {
         return Math.max(0, Math.min(100, value));
     }
 
-    public String getName() { return name; }
-    public int getHunger()    { return hunger; }
-    public int getHydration() { return hydration; }
-    public int getEnergy()    { return energy; }
-    public int getHealth()    { return health; }
+    public String getName() {
+        return name;
+    }
+
+    public int getHunger() {
+        return hunger;
+    }
+
+    public int getHydration() {
+        return hydration;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public int getHealth() {
+        return health;
+    }
 
     @Override
     public String toString() {
         return name + " | Hunger: " + hunger +
-               " | Hydration: " + hydration + " | Energy: " + energy +
-               " | Health: " + health;
+                " | Hydration: " + hydration + " | Energy: " + energy +
+                " | Health: " + health;
     }
 }
