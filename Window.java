@@ -26,12 +26,16 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
         cardLayout = new CardLayout();
         mainContainer = new JPanel(cardLayout);
 
-        MainMenuPanel mainMenuPanel = new MainMenuPanel(this);
+        SceneManager.init(cardLayout, mainContainer);
 
-        gamePanel = new GamePanel(player, pet, () -> cardLayout.show(mainContainer, "MENU"));
+        MainMenuPanel mainMenuPanel = new MainMenuPanel(this);
+        FishingPanel fishingPanel = new FishingPanel(player);
+
+        gamePanel = new GamePanel(player, pet);
 
         mainContainer.add(mainMenuPanel, "MENU");
         mainContainer.add(gamePanel, "GAME");
+        mainContainer.add(fishingPanel, "FISHING");
 
         add(mainContainer);
         cardLayout.show(mainContainer, "MENU");
@@ -41,7 +45,7 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
     public void onPlayClicked() {
         System.out.println("Play Game clicked!");
         gamePanel.updateHUD();
-        cardLayout.show(mainContainer, "GAME");
+        SceneManager.goTo("GAME");
     }
 
     @Override

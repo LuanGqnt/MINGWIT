@@ -14,15 +14,13 @@ public class GamePanel extends JPanel {
 
     private Player player;
     private Pet pet;
-    private Runnable onBackToMenu;
 
     private JLabel statusLabel;
     private BufferedImage petSprite;
 
-    public GamePanel(Player player, Pet pet, Runnable onBackToMenu) {
+    public GamePanel(Player player, Pet pet) {
         this.player = player;
         this.pet = pet;
-        this.onBackToMenu = onBackToMenu;
 
         setLayout(new BorderLayout());
         setBackground(new Color(45, 52, 54));
@@ -65,6 +63,10 @@ public class GamePanel extends JPanel {
             updateHUD();
             repaint();
         });
+
+
+        fishingButton.addActionListener(e -> SceneManager.goTo("FISHING"));
+        inventoryButton.addActionListener(e -> System.out.println(player.getInventory()));
 
         // menuButton.addActionListener(e -> onBackToMenu.run());
 

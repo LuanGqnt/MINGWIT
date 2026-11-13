@@ -18,7 +18,7 @@ public class Player {
         if (points > 0) score += points;
     }
 
-    public void earnReward(int amount) {
+    public void addCoins(int amount) {
         if (amount > 0) coins += amount;
     }
 
