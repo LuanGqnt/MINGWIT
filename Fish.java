@@ -1,15 +1,13 @@
-public class Fish {
-    private String name;
-    private int value;
+public class Fish extends Item {
     private String rarity;
 
-    public Fish(String name, int value, String rarity) {
-        this.name = name;
-        this.value = value;
+    public Fish(String name, int value, String description, String rarity) {
+        super(name, value, description);
         this.rarity = rarity;
     }
 
-    public String getName() { return name; }
-    public int getValue() { return value; }
+    @Override 
+    public void use(Pet pet) {}
+
     public String getRarity() { return rarity; }
 }

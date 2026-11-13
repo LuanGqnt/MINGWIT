@@ -101,7 +101,7 @@ public class FishingPanel extends JPanel {
         currentState = FishingState.WAITING_FOR_CAST;
 
         player.addCoins(catchedFish.getValue());
-        player.getInventory().add(catchedFish);
+        player.addItem(catchedFish);
 
         repaint();
     }
@@ -110,17 +110,17 @@ public class FishingPanel extends JPanel {
         int roll = random.nextInt(100); // 0 to 99
 
         if (roll < 40) {
-            return new Fish("Common Fish", 10, "Common");
+            return new Fish("Common Fish", 10, "Common", "Common");
         } else if (roll < 65) {
-            return new Fish("Blue Fish", 18, "Common");
+            return new Fish("Blue Fish", 18, "Common", "Common");
         } else if (roll < 83) {
-            return new Fish("Red Fish", 35, "Uncommon");
+            return new Fish("Red Fish", 35, "Uncommon", "Uncommon");
         } else if (roll < 93) {
-            return new Fish("Golden Fish", 80, "Rare");
+            return new Fish("Golden Fish", 80, "Rare", "Rare");
         } else if (roll < 98) {
-            return new Fish("Diamond Fish", 180, "Epic");
+            return new Fish("Diamond Fish", 180, "Epic", "Epic");
         } else {    
-            return new Fish("Rainbow Fish", 400, "Legendary");
+            return new Fish("Rainbow Fish", 400, "Legendary", "Legendary");
         }
     }
 

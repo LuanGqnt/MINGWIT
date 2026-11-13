@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.spi.ImageTranscoderSpi;
+
 public class Player {
     private String name;
     private int score;
     private int coins;
-    private List<Fish> inventory;
+    private List<ItemStack> inventory;
 
     public Player(String name) {
         this.name = name;
@@ -22,22 +24,36 @@ public class Player {
         if (amount > 0) coins += amount;
     }
 
-    public void addFish(Fish fish) {
-        if (fish != null) inventory.add(fish);
-    }
-
-    public boolean spendCoins(int amount) {
-        if (amount <= coins) {
-            coins -= amount;
-            return true;
-        }
-        return false;
-    }
-
     public String getName() { return name; }
     public int getScore()   { return score; }
     public int getCoins()   { return coins; }
-    public List<Fish> getInventory() { return inventory; }
+    public List<ItemStack> getInventory() { return inventory; }
+
+    public void addItem(Item newItem) {
+        for (ItemStack slot : inventory) {
+            if (slot.getItem().getName() == newItem.getName()) {
+                slot.addCount(1);
+                return;
+            }
+        }
+
+        inventory.add(new ItemStack(newItem, 1));
+    }
+
+    public void removeItem(Item newItem) {
+        for (int i = 0; i < inventory.size(); i++) {
+            ItemStack slot = inventory.get(i);
+            
+            if (slot.getItem().getName() == newItem.getName()) {
+                slot.removeCount(1);
+
+                if (slot.getCount() <= 0) {
+                    inventory.remove(i);
+                }
+                return;
+            }
+        }
+    }
 
     @Override
     public String toString() {
