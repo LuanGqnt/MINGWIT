@@ -3,43 +3,50 @@ public class Pet {
     private int hunger; // 0 = starving, 100 = full
     private int hydration; // 0 = dehydrated, 100 = fully hydrated
     private int energy; // 0 = exhausted, 100 = energetic
-    private int health; // 0 = critical, 100 = perfect
 
     public Pet(String name) {
         this.name = name;
         this.hunger = 50;
         this.hydration = 50;
         this.energy = 50;
-        this.health = 100;
     }
 
-    public void feed() {
+    public String feed() {
+        int oldHunger = hunger;
         hunger = clamp(hunger + 20);
         energy = clamp(energy + 10);
-        updateStatus();
+        
+        if (hunger == 100 && oldHunger < 100) {
+            return name + " is now completely full!";
+        }
+        return "";
     }
 
-    public void giveWater() {
+    public String giveWater() {
+        int oldHydration = hydration;
         hydration = clamp(hydration + 25);
-        updateStatus();
+        
+        if (hydration == 100 && oldHydration < 100) {
+            return name + " is fully hydrated!";
+        }
+        return "";
     }
 
-    public void giveMedicine(Medication medication) {
+    public String giveMedicine(Medication medication) {
+        int oldEnergy = energy;
+        energy = clamp(energy + 30);
+        
+        if (energy == 100 && oldEnergy < 100) {
+            if (medication != null) {
+                return name + " took " + medication.getName() + " and is now fully energized!";
+            }
+            return name + " took medicine and is now fully energized!";
+        }
+        
         if (medication != null) {
-            health = clamp(health + 20);
-            System.out.println(name + " took " + medication.getName() + ".");
+            return name + " took " + medication.getName() + ".";
         }
-        updateStatus();
-    }
-
-    // Recomputes health based on hunger, hydration and energy
-    public void updateStatus() {
-        if (hunger > 80 || hydration < 20 || energy < 20) {
-            health = clamp(health - 10);
-        }
-        if (health <= 0) {
-            System.out.println(name + " needs urgent care!");
-        }
+        return name + " took some medicine.";
     }
 
     private int clamp(int value) {
@@ -62,18 +69,9 @@ public class Pet {
         return energy;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     @Override
     public String toString() {
         return name + " | Hunger: " + hunger +
-                " | Hydration: " + hydration + " | Energy: " + energy +
-                " | Health: " + health;
+                " | Hydration: " + hydration + " | Energy: " + energy;
     }
 }

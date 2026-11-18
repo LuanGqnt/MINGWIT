@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
 
         petSprite = SpriteLoader.loadImage("assets/pet_placeholder.jpg");
 
-        // Top
+        // Top 
         JPanel topHud = new JPanel();
         topHud.setBackground(new Color(30, 39, 46));
         topHud.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -39,9 +39,9 @@ public class GamePanel extends JPanel {
         topHud.add(statusLabel);
         add(topHud, BorderLayout.NORTH);
 
-        // Bottom
+        // Bottom 
         JPanel bottomDock = new JPanel();
-        bottomDock.setLayout(new GridLayout(1, 5, 10, 0)); // Row of action buttons
+        bottomDock.setLayout(new GridLayout(1, 5, 10, 0));
         bottomDock.setOpaque(false);
         bottomDock.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 40, 30, 40));
 
@@ -50,39 +50,49 @@ public class GamePanel extends JPanel {
         JButton medicineButton = createDockButton("Medicine");
         JButton fishingButton = createDockButton("Fishing");
         JButton inventoryButton = createDockButton("Inventory");
-        JButton customizeButton = createDockButton("Customize");
 
         feedButton.addActionListener(e -> {
-            pet.feed();
+            String msg = pet.feed();
+            if (!msg.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            }
             updateHUD();
             repaint();
         });
 
         waterButton.addActionListener(e -> {
-            pet.giveWater();
+            String msg = pet.giveWater();
+            if (!msg.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            }
             updateHUD();
             repaint();
         });
 
+        medicineButton.addActionListener(e -> {
+            String msg = pet.giveMedicine(null); // where the medication will be passed in the future
+            if (!msg.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            }
+            updateHUD();
+            repaint();
+        });
 
         fishingButton.addActionListener(e -> SceneManager.goTo("FISHING"));
         inventoryButton.addActionListener(e -> System.out.println(player.getInventory()));
-
-        // menuButton.addActionListener(e -> onBackToMenu.run());
 
         bottomDock.add(feedButton);
         bottomDock.add(waterButton);
         bottomDock.add(medicineButton);
         bottomDock.add(fishingButton);
         bottomDock.add(inventoryButton);
-        bottomDock.add(customizeButton);
 
         add(bottomDock, BorderLayout.SOUTH);
     }
 
     public void updateHUD() {
-        statusLabel.setText(String.format("Coins: %d  |  Pet: %s  |  Hunger: %d/100  |  Hydration: %d/100  |  Health: %d/100",
-                player.getCoins(), pet.getName(), pet.getHunger(), pet.getHydration(), pet.getHealth()));
+        statusLabel.setText(String.format("Coins: %d  |  Pet: %s  |  Hunger: %d/100  |  Hydration: %d/100  |  Energy: %d/100",
+                player.getCoins(), pet.getName(), pet.getHunger(), pet.getHydration(), pet.getEnergy()));
     }
 
     private JButton createDockButton(String text) {
