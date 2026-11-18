@@ -1,14 +1,20 @@
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 
 public class MainMenuPanel extends JPanel {
 
-    private MenuListener listener;
+    private BufferedImage bgSprite;
+    private BufferedImage startButtonSprite;
+    private BufferedImage settingsSprite;
+    private BufferedImage exitSprite;
 
     public interface MenuListener {
         void onPlayClicked();
@@ -16,26 +22,24 @@ public class MainMenuPanel extends JPanel {
     }
 
     public MainMenuPanel(MenuListener listener) {
-        this.listener = listener;
-
         setLayout(new BorderLayout());
         setBackground(new Color(35, 39, 42)); 
 
-        JLabel titleLabel = new JLabel("MINGWIT", JLabel.CENTER);
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
-        titleLabel.setForeground(Color.WHITE);
-
-        titleLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(60, 0, 40, 0));
-        add(titleLabel, BorderLayout.NORTH);
+        bgSprite = SpriteLoader.loadImage("assets/main_menu_background.png");
+        startButtonSprite = SpriteLoader.loadImage("assets/start_button.png");
+        settingsSprite = SpriteLoader.loadImage("assets/settings_button.png");
+        exitSprite = SpriteLoader.loadImage("assets/exit_button.png");
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 1, 15, 15));
-        buttonPanel.setOpaque(false); 
-        buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 250, 100, 250));
 
-        JButton playButton = createStyledButton("Play");
-        JButton settingsButton = createStyledButton("Settings");
-        JButton exitButton = createStyledButton("Exit Game");
+        // buttonPanel.setLayout(new GridLayout(4, 1, 15, 15));
+        buttonPanel.setLayout(new GridLayout(5, 1, 15, 15));
+        buttonPanel.setOpaque(false); 
+        buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(250, 300, 50, 300));
+
+        JButton playButton = createStyledButton(startButtonSprite);
+        JButton settingsButton = createStyledButton(settingsSprite);
+        JButton exitButton = createStyledButton(exitSprite);
 
         playButton.addActionListener(e -> {
             if (listener != null) listener.onPlayClicked();
@@ -56,12 +60,36 @@ public class MainMenuPanel extends JPanel {
         add(buttonPanel, BorderLayout.CENTER);
     }
 
-    private JButton createStyledButton(String text) {
-        JButton button = new JButton(text);
+    private JButton createStyledButton(BufferedImage buttonSprite) {
+        JButton button = new JButton();
         button.setFont(new Font("SansSerif", Font.BOLD, 16));
-        button.setBackground(new Color(114, 137, 218));
-        button.setForeground(Color.BLACK);
-        button.setFocusPainted(false); 
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setOpaque(false);
+
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        if (buttonSprite != null) {
+            BufferedImage scaledSprite = SpriteLoader.scaleImage(buttonSprite, 1.2f);
+            
+            button.setIcon(new ImageIcon(scaledSprite));
+            button.setHorizontalTextPosition(JButton.CENTER);
+            button.setVerticalTextPosition(JButton.CENTER);
+        } else {
+            button.setBackground(new Color(114, 137, 218));
+            button.setContentAreaFilled(true);
+        }
+
         return button;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        g.drawImage(bgSprite, 0, 0, getWidth(), getHeight(), this);
     }
 }

@@ -81,7 +81,7 @@ public class GamePanel extends JPanel {
     }
 
     public void updateHUD() {
-        statusLabel.setText(String.format("Coins: 🪙 %d  |  Pet: %s  |  Hunger: %d/100  |  Hydration: %d/100  |  Health: %d/100",
+        statusLabel.setText(String.format("Coins: %d  |  Pet: %s  |  Hunger: %d/100  |  Hydration: %d/100  |  Health: %d/100",
                 player.getCoins(), pet.getName(), pet.getHunger(), pet.getHydration(), pet.getHealth()));
     }
 

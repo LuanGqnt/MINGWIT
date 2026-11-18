@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.spi.ImageTranscoderSpi;
-
 public class Player {
     private String name;
     private int score;
