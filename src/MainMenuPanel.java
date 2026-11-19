@@ -1,10 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -23,23 +25,29 @@ public class MainMenuPanel extends JPanel {
 
     public MainMenuPanel(MenuListener listener) {
         setLayout(new BorderLayout());
-        setBackground(new Color(35, 39, 42)); 
+        setBackground(new Color(35, 39, 42));
 
         bgSprite = SpriteLoader.loadImage("../assets/main_menu_background.png");
         startButtonSprite = SpriteLoader.loadImage("../assets/start_button.png");
         settingsSprite = SpriteLoader.loadImage("../assets/settings_button.png");
         exitSprite = SpriteLoader.loadImage("../assets/exit_button.png");
 
-        JPanel buttonPanel = new JPanel();
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        buttonPanel.setOpaque(false);
 
-        // buttonPanel.setLayout(new GridLayout(4, 1, 15, 15));
-        buttonPanel.setLayout(new GridLayout(5, 1, 15, 15));
-        buttonPanel.setOpaque(false); 
-        buttonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(250, 300, 50, 300));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 130, 20));
 
         JButton playButton = createStyledButton(startButtonSprite);
         JButton settingsButton = createStyledButton(settingsSprite);
         JButton exitButton = createStyledButton(exitSprite);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        buttonPanel.add(playButton, gbc);
+        buttonPanel.add(settingsButton, gbc);
+        buttonPanel.add(exitButton, gbc);
 
         playButton.addActionListener(e -> {
             if (listener != null) listener.onPlayClicked();
@@ -53,19 +61,15 @@ public class MainMenuPanel extends JPanel {
             System.exit(0);
         });
 
-        buttonPanel.add(playButton);
-        buttonPanel.add(settingsButton);
-        buttonPanel.add(exitButton);
-
-        add(buttonPanel, BorderLayout.CENTER);
+        // Pin the button stack to the bottom of MainMenuPanel
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     private JButton createStyledButton(BufferedImage buttonSprite) {
         JButton button = new JButton();
-        button.setFont(new Font("SansSerif", Font.BOLD, 16));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        
+
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
         button.setOpaque(false);
@@ -73,14 +77,29 @@ public class MainMenuPanel extends JPanel {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         if (buttonSprite != null) {
-            BufferedImage scaledSprite = SpriteLoader.scaleImage(buttonSprite, 1.2f);
-            
-            button.setIcon(new ImageIcon(scaledSprite));
+            BufferedImage normalSprite = SpriteLoader.scaleImage(buttonSprite, 1.2f);
+            BufferedImage hoverSprite = SpriteLoader.scaleImage(buttonSprite, 1.32f);
+
+            ImageIcon normalIcon = new ImageIcon(normalSprite);
+            ImageIcon hoverIcon = new ImageIcon(hoverSprite);
+
+            button.setPreferredSize(new Dimension(hoverIcon.getIconWidth(), hoverIcon.getIconHeight()));
+            button.setIcon(normalIcon);
             button.setHorizontalTextPosition(JButton.CENTER);
             button.setVerticalTextPosition(JButton.CENTER);
-        } else {
-            button.setBackground(new Color(114, 137, 218));
-            button.setContentAreaFilled(true);
+
+            button.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent e) {
+                    button.setIcon(hoverIcon);
+                    // TODO: Also play a sound
+                }
+
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent e) {
+                    button.setIcon(normalIcon);
+                }
+            });
         }
 
         return button;
@@ -89,7 +108,8 @@ public class MainMenuPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
-        g.drawImage(bgSprite, 0, 0, getWidth(), getHeight(), this);
+        if (bgSprite != null) {
+            g.drawImage(bgSprite, 0, 0, getWidth(), getHeight(), this);
+        }
     }
 }
