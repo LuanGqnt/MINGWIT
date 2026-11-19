@@ -8,12 +8,24 @@ import javax.imageio.ImageIO;
 
 public class SpriteLoader {
     public static BufferedImage loadImage(String fileName) {
+        // Try looking for the file directly
+        File file = new File(fileName);
+        
+        // If it doesn't exist, try prepending "assets/" if it isn't already there
+        if (!file.exists()) {
+            if (fileName.startsWith("assets/") || fileName.startsWith("assets\\")) {
+                file = new File(fileName);
+            } else {
+                file = new File("assets" + File.separator + fileName);
+            }
+        }
+
         try {
-            File file = new File(fileName);
             if (file.exists()) {
                 return ImageIO.read(file);
             } else {
-                System.out.println("Warning: Sprite not found -> " + fileName);
+                // Let's print the absolute path so we can see exactly where it's looking if it fails
+                System.out.println("Warning: Sprite not found -> " + file.getAbsolutePath());
                 return null;
             }
         } catch (IOException e) {
@@ -22,7 +34,6 @@ public class SpriteLoader {
         }
     }
 
-    // Other helper methods
     public static BufferedImage scaleImage(BufferedImage original, float scaleFactor) {
         int targetWidth = Math.max(1, (int) (original.getWidth() * scaleFactor));
         int targetHeight = Math.max(1, (int) (original.getHeight() * scaleFactor));
