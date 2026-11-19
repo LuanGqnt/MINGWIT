@@ -20,16 +20,8 @@ public class Medication extends Item {
             System.out.println(this.getName() + " treatment is already completed.");
             return;
         }
-
-        pet.setHealth(pet.getHealth() + 25); 
+        pet.giveMedicine(this);
         recordDose();
-
-        System.out.println(pet.getName() + " was given " + this.getName() + " (" + dosage + ").");
-        
-        if (dosesGiven >= durationDays) {
-            markCompleted();
-            System.out.println(this.getName() + " treatment course is now completed!");
-        }
     }
 
     public void recordDose() {
