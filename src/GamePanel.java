@@ -25,7 +25,7 @@ public class GamePanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(45, 52, 54));
 
-        petSprite = SpriteLoader.loadImage("assets/pet_placeholder.jpg");
+        petSprite = SpriteLoader.loadImage("../assets/pet_placeholder.jpg");
 
         // Top 
         JPanel topHud = new JPanel();

@@ -8,10 +8,8 @@ import javax.imageio.ImageIO;
 
 public class SpriteLoader {
     public static BufferedImage loadImage(String fileName) {
-        // Try looking for the file directly
         File file = new File(fileName);
         
-        // If it doesn't exist, try prepending "assets/" if it isn't already there
         if (!file.exists()) {
             if (fileName.startsWith("assets/") || fileName.startsWith("assets\\")) {
                 file = new File(fileName);
@@ -24,7 +22,6 @@ public class SpriteLoader {
             if (file.exists()) {
                 return ImageIO.read(file);
             } else {
-                // Let's print the absolute path so we can see exactly where it's looking if it fails
                 System.out.println("Warning: Sprite not found -> " + file.getAbsolutePath());
                 return null;
             }

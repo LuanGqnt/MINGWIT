@@ -1,6 +1,3 @@
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -8,6 +5,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class MainMenuPanel extends JPanel {
 
@@ -25,10 +25,10 @@ public class MainMenuPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(35, 39, 42)); 
 
-        bgSprite = SpriteLoader.loadImage("assets/main_menu_background.png");
-        startButtonSprite = SpriteLoader.loadImage("assets/start_button.png");
-        settingsSprite = SpriteLoader.loadImage("assets/settings_button.png");
-        exitSprite = SpriteLoader.loadImage("assets/exit_button.png");
+        bgSprite = SpriteLoader.loadImage("../assets/main_menu_background.png");
+        startButtonSprite = SpriteLoader.loadImage("../assets/start_button.png");
+        settingsSprite = SpriteLoader.loadImage("../assets/settings_button.png");
+        exitSprite = SpriteLoader.loadImage("../assets/exit_button.png");
 
         JPanel buttonPanel = new JPanel();
 
