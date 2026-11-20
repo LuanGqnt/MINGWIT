@@ -90,7 +90,7 @@ public class FishingPanel extends JPanel {
 
     private void triggerBite() {
         currentState = FishingState.REELING;
-        statusMessage = "🐟 BITE! Click the water quickly to reel it in!";
+        statusMessage = "BITE! Click the water quickly to reel it in!";
         repaint();
     }
 

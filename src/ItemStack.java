@@ -1,20 +1,20 @@
 public class ItemStack {
     private Item item;
-    private int count;
+    private int quantity;
 
-    public ItemStack(Item item, int count) {
+    public ItemStack(Item item, int quantity) {
         this.item = item;
-        this.count = count;
+        this.quantity = quantity;
     }
 
-    public void addCount(int amount) {
-        this.count += amount;
+    public void addQuantity(int amount) {
+        this.quantity += amount;
     }
 
-    public void removeCount(int amount) {
-        this.count = Math.max(0, this.count - amount);
+    public void removeQuantity(int amount) {
+        this.quantity = Math.max(0, this.quantity - amount);
     }
 
     public Item getItem() { return item; }
-    public int getCount() { return count; }
+    public int getQuantity() { return quantity; }
 }

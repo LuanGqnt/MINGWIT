@@ -27,14 +27,23 @@ public class Player {
     public int getCoins()   { return coins; }
     public List<ItemStack> getInventory() { return inventory; }
 
+    public ItemStack getInventorySlot(int slot) {
+        if (slot < 0 || slot >= inventory.size()) {
+            return null;
+        }
+        
+        return inventory.get(slot);
+    }
+
     public void addItem(Item newItem) {
         for (ItemStack slot : inventory) {
             if (slot.getItem().getName() == newItem.getName()) {
-                slot.addCount(1);
+                slot.addQuantity(1);
                 return;
             }
         }
 
+        
         inventory.add(new ItemStack(newItem, 1));
     }
 
@@ -43,9 +52,9 @@ public class Player {
             ItemStack slot = inventory.get(i);
             
             if (slot.getItem().getName() == newItem.getName()) {
-                slot.removeCount(1);
+                slot.removeQuantity(i);
 
-                if (slot.getCount() <= 0) {
+                if (slot.getQuantity() <= 0) {
                     inventory.remove(i);
                 }
                 return;

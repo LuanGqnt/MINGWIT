@@ -1,13 +1,20 @@
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel {
@@ -16,6 +23,7 @@ public class GamePanel extends JPanel {
     private Pet pet;
 
     private JLabel statusLabel;
+    private InventoryPanel inventoryPanel;
     private BufferedImage petSprite;
 
     public GamePanel(Player player, Pet pet) {
@@ -27,7 +35,7 @@ public class GamePanel extends JPanel {
 
         petSprite = SpriteLoader.loadImage("../assets/pet_placeholder.jpg");
 
-        // Top 
+        // Top
         JPanel topHud = new JPanel();
         topHud.setBackground(new Color(30, 39, 46));
         topHud.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -39,7 +47,17 @@ public class GamePanel extends JPanel {
         topHud.add(statusLabel);
         add(topHud, BorderLayout.NORTH);
 
-        // Bottom 
+        // Center
+        inventoryPanel = new InventoryPanel(player, pet, 3, 5);
+        inventoryPanel.setVisible(false);
+
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        centerPanel.setOpaque(false);
+        centerPanel.add(inventoryPanel);
+
+        add(centerPanel, BorderLayout.CENTER);
+
+        // Bottom
         JPanel bottomDock = new JPanel();
         bottomDock.setLayout(new GridLayout(1, 5, 10, 0));
         bottomDock.setOpaque(false);
@@ -79,7 +97,8 @@ public class GamePanel extends JPanel {
         });
 
         fishingButton.addActionListener(e -> SceneManager.goTo("FISHING"));
-        inventoryButton.addActionListener(e -> System.out.println(player.getInventory()));
+
+        inventoryButton.addActionListener(e -> toggleInventory());
 
         bottomDock.add(feedButton);
         bottomDock.add(waterButton);
@@ -88,6 +107,21 @@ public class GamePanel extends JPanel {
         bottomDock.add(inventoryButton);
 
         add(bottomDock, BorderLayout.SOUTH);
+
+        setupKeyBindings();
+    }
+
+    private void setupKeyBindings() {
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getActionMap();
+
+        inputMap.put(KeyStroke.getKeyStroke("E"), "toggleInventory");
+        actionMap.put("toggleInventory", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleInventory();
+            }
+        });
     }
 
     public void updateHUD() {
@@ -106,6 +140,15 @@ public class GamePanel extends JPanel {
         button.setFocusPainted(false);
         button.setPreferredSize(new Dimension(110, 45));
         return button;
+    }
+
+    private void toggleInventory() {
+        boolean nextState = !inventoryPanel.isVisible();
+
+        inventoryPanel.refresh();
+        inventoryPanel.setVisible(nextState);
+        inventoryPanel.revalidate();
+        inventoryPanel.repaint();
     }
 
     @Override
