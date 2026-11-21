@@ -9,7 +9,7 @@ import java.net.URL;
 public class SoundManager {
     private static Clip musicClip;
 
-    public static void playSfx(String resourcePath) {
+    public static void playSfx(String resourcePath, float volumeDb) {
         try {
             AudioInputStream audioIn = getAudioStream(resourcePath);
             if (audioIn == null)
@@ -17,6 +17,7 @@ public class SoundManager {
 
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
+            setClipVolume(clip, volumeDb);
             clip.addLineListener(event -> {
                 if (event.getType() == javax.sound.sampled.LineEvent.Type.STOP) {
                     clip.close();

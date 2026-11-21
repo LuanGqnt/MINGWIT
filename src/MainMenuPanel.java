@@ -53,20 +53,20 @@ public class MainMenuPanel extends JPanel {
         buttonPanel.add(exitButton, gbc);
 
         playButton.addActionListener(e -> {
-            SoundManager.playSfx("../assets/sfx/button_click.wav");
+            SoundManager.playSfx("../assets/sfx/button_click.wav", 0f);
             if (listener != null)
                 listener.onPlayClicked();
 
         });
 
         settingsButton.addActionListener(e -> {
-            SoundManager.playSfx("../assets/sfx/button_click.wav");
+            SoundManager.playSfx("../assets/sfx/button_click.wav", 0f);
             if (listener != null)
                 listener.onSettingsClicked();
         });
 
         exitButton.addActionListener(e -> {
-            SoundManager.playSfx("../assets/sfx/button_click.wav");
+            SoundManager.playSfx("../assets/sfx/button_click.wav", 0f);
             System.exit(0);
         });
 
@@ -101,7 +101,7 @@ public class MainMenuPanel extends JPanel {
                 @Override
                 public void mouseEntered(java.awt.event.MouseEvent e) {
                     button.setIcon(hoverIcon);
-                    SoundManager.playSfx("../assets/sfx/button_hover.wav");
+                    SoundManager.playSfx("../assets/sfx/button_hover.wav", 0f);
                 }
 
                 @Override

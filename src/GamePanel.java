@@ -73,7 +73,7 @@ public class GamePanel extends JPanel {
         JButton inventoryButton = createDockButton("Inventory");
 
         feedButton.addActionListener(e -> {
-            SoundManager.playSfx("../assets/sfx/button_click.wav");
+            SoundManager.playSfx("../assets/sfx/button_click.wav", 0f);
             // String msg = pet.feed();
             // if (!msg.isEmpty()) {
             //     javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
@@ -83,7 +83,7 @@ public class GamePanel extends JPanel {
         });
 
         waterButton.addActionListener(e -> {
-            SoundManager.playSfx("../assets/sfx/button_click.wav");
+            SoundManager.playSfx("../assets/sfx/button_click.wav", 0f);
             String msg = pet.giveWater();
             if (!msg.isEmpty()) {
                 javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!",
@@ -94,7 +94,7 @@ public class GamePanel extends JPanel {
         });
 
         medicineButton.addActionListener(e -> {
-            SoundManager.playSfx("../assets/sfx/button_click.wav");
+            SoundManager.playSfx("../assets/sfx/button_click.wav", 0f);
             String msg = pet.giveMedicine(null); // where the medication will be passed in the future
             if (!msg.isEmpty()) {
                 javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!",
@@ -105,13 +105,13 @@ public class GamePanel extends JPanel {
         });
 
         fishingButton.addActionListener(e -> {
-            SoundManager.playSfx("../assets/sfx/button_click.wav");
+            SoundManager.playSfx("../assets/sfx/button_click.wav", 0f);
             SoundManager.playMusic("../assets/music/fishing_theme.wav", -10.0f);
             SceneManager.goTo("FISHING");
         });
 
         inventoryButton.addActionListener(e -> {
-            SoundManager.playSfx("../assets/sfx/button_click.wav");
+            SoundManager.playSfx("../assets/sfx/button_click.wav", 0f);
             toggleInventory();
         });
 
