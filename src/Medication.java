@@ -15,13 +15,14 @@ public class Medication extends Item {
     }
 
     @Override
-    public void use(Pet pet) {
+    public boolean use(Pet pet) {
         if (completed) {
             System.out.println(this.getName() + " treatment is already completed.");
-            return;
+            return false;
         }
         pet.giveMedicine(this);
         recordDose();
+        return true;
     }
 
     public void recordDose() {

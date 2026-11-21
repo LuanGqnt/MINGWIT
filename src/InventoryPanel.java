@@ -14,16 +14,22 @@ public class InventoryPanel extends JPanel {
 
     private Player player;
     private Pet pet;
+    private Runnable onInventoryChanged;
+
     private int rows;
     private int cols;
     private JPanel gridPanel;
     private JLabel statusLabel;
 
-    public InventoryPanel(Player player, Pet pet, int rows, int cols) {
+    private JPanel actionButtonPanel;
+    private ItemStack selectedStack;
+
+    public InventoryPanel(Player player, Pet pet, int rows, int cols, Runnable onInventoryChanged) {
         this.player = player;
         this.pet = pet;
         this.rows = rows;
         this.cols = cols;
+        this.onInventoryChanged = onInventoryChanged;
 
         setLayout(new BorderLayout(8, 8));
         setPreferredSize(new Dimension(cols * 84 + 32, rows * 84 + 80));
@@ -54,15 +60,67 @@ public class InventoryPanel extends JPanel {
         gridPanel.setOpaque(false);
 
         // Footer
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setOpaque(false);
+
+        actionButtonPanel = new JPanel();
+        actionButtonPanel.setOpaque(false);
+        actionButtonPanel.setVisible(false);
+
+        JButton sellButton = new JButton("Sell");
+        JButton useButton = new JButton("Use");
+
+        sellButton.addActionListener(e -> sellClicked());
+        useButton.addActionListener(e -> useClicked());
+
+        actionButtonPanel.add(sellButton);
+        actionButtonPanel.add(useButton);
+        
         statusLabel = new JLabel("Click a slot to inspect", SwingConstants.LEFT);
         statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
         statusLabel.setForeground(new Color(200, 205, 210));
+        
+        bottomPanel.add(statusLabel);
+        bottomPanel.add(actionButtonPanel);
 
         add(headerPanel, BorderLayout.NORTH);
         add(gridPanel, BorderLayout.CENTER);
-        add(statusLabel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
 
         refresh();
+    }
+
+    private void sellClicked() {
+        if(selectedStack != null) {
+            player.addCoins(selectedStack.getItem().getValue());
+
+            statusLabel.setText(selectedStack.getItem().getName() + " sold!");
+            player.removeItemStackQuantity(selectedStack);
+
+            refresh();
+            if (onInventoryChanged != null) {
+                onInventoryChanged.run();
+            }
+        }
+    }
+
+    private void useClicked() {
+        if(selectedStack == null) return;
+
+        boolean success = selectedStack.use(pet);
+
+        if(!success) return;
+
+        statusLabel.setText(selectedStack.getItem().getName() + " used!");
+        player.removeItemStackQuantity(selectedStack);
+
+        refresh();
+
+        if (onInventoryChanged != null) {
+            onInventoryChanged.run();
+        }
+
+
     }
 
     public void setStatusMessage(String msg) {
@@ -75,7 +133,7 @@ public class InventoryPanel extends JPanel {
 
         for (int i = 0; i < capacity; i++) {
             final int slotIndex = i;
-            ItemStack stack = player.getInventorySlot(i); // adapt to your Player getter
+            ItemStack stack = player.getInventorySlot(i);
 
             JButton slotButton = new JButton();
             slotButton.setFocusPainted(false);
@@ -86,15 +144,23 @@ public class InventoryPanel extends JPanel {
 
             if (stack != null && stack.getQuantity() > 0) {
                 slotButton.setText("<html><center>" + stack.getItem().getName()
-                    + "<br><font color='#AAAAAA'>x" + stack.getQuantity() + "</font></center></html>");
-                slotButton.addActionListener(e ->
-                    statusLabel.setText(stack.getItem().getName() + " (x" + stack.getQuantity() + ")")
-                );
+                + "<br><font color='#AAAAAA'>x" + stack.getQuantity() + "</font></center></html>");
+                
+                // Button clicked
+                slotButton.addActionListener(e -> {
+                    selectedStack = stack;
+                    statusLabel.setText(stack.getItem().getName() + " (x" + stack.getQuantity() + ")");
+                    actionButtonPanel.setVisible(true);
+                });
             } else {
+                
                 slotButton.setText("");
-                slotButton.addActionListener(e ->
-                    statusLabel.setText("Slot " + (slotIndex + 1) + " is empty")
-                );
+                slotButton.addActionListener(e -> {
+                    selectedStack = null;
+                    statusLabel.setText("Slot " + (slotIndex + 1) + " is empty");
+                    actionButtonPanel.setVisible(false);
+                });
+
             }
 
             gridPanel.add(slotButton);

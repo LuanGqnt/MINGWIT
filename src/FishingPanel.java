@@ -100,7 +100,6 @@ public class FishingPanel extends JPanel {
         statusMessage = "You successfully caught a " + catchedFish.getName() + "! Click water to cast again.";
         currentState = FishingState.WAITING_FOR_CAST;
 
-        player.addCoins(catchedFish.getValue());
         player.addItem(catchedFish);
 
         repaint();
@@ -110,17 +109,17 @@ public class FishingPanel extends JPanel {
         int roll = random.nextInt(100); // 0 to 99
 
         if (roll < 40) {
-            return new Fish("Common Fish", 10, "Common", "Common");
+            return new Fish("Common Fish", 10, "Common", 20, "Common");
         } else if (roll < 65) {
-            return new Fish("Blue Fish", 18, "Common", "Common");
+            return new Fish("Blue Fish", 18, "Common", 20, "Common");
         } else if (roll < 83) {
-            return new Fish("Red Fish", 35, "Uncommon", "Uncommon");
+            return new Fish("Red Fish", 35, "Uncommon", 30, "Uncommon");
         } else if (roll < 93) {
-            return new Fish("Golden Fish", 80, "Rare", "Rare");
+            return new Fish("Golden Fish", 80, "Rare", 30, "Rare");
         } else if (roll < 98) {
-            return new Fish("Diamond Fish", 180, "Epic", "Epic");
+            return new Fish("Diamond Fish", 180, "Epic", 30, "Epic");
         } else {    
-            return new Fish("Rainbow Fish", 400, "Legendary", "Legendary");
+            return new Fish("Rainbow Fish", 400, "Legendary", 50, "Legendary");
         }
     }
 

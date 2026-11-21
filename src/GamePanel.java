@@ -48,7 +48,10 @@ public class GamePanel extends JPanel {
         add(topHud, BorderLayout.NORTH);
 
         // Center
-        inventoryPanel = new InventoryPanel(player, pet, 3, 5);
+        inventoryPanel = new InventoryPanel(player, pet, 3, 5, () -> {
+            updateHUD();
+            repaint();
+        });
         inventoryPanel.setVisible(false);
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
@@ -70,12 +73,12 @@ public class GamePanel extends JPanel {
         JButton inventoryButton = createDockButton("Inventory");
 
         feedButton.addActionListener(e -> {
-            String msg = pet.feed();
-            if (!msg.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            }
-            updateHUD();
-            repaint();
+            // String msg = pet.feed();
+            // if (!msg.isEmpty()) {
+            //     javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            // }
+            // updateHUD();
+            // repaint();
         });
 
         waterButton.addActionListener(e -> {

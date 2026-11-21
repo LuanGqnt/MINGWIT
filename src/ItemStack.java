@@ -12,7 +12,11 @@ public class ItemStack {
     }
 
     public void removeQuantity(int amount) {
-        this.quantity = Math.max(0, this.quantity - amount);
+        this.quantity = Math.max(0, this.quantity - amount);;
+    }
+
+    public boolean use(Pet pet) {
+        return item.use(pet);
     }
 
     public Item getItem() { return item; }

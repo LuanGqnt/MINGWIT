@@ -43,18 +43,17 @@ public class Player {
             }
         }
 
-        
         inventory.add(new ItemStack(newItem, 1));
     }
 
-    public void removeItem(Item newItem) {
+    public void removeItemStackQuantity(ItemStack stack) {
         for (int i = 0; i < inventory.size(); i++) {
-            ItemStack slot = inventory.get(i);
+            ItemStack stack_ = inventory.get(i);
             
-            if (slot.getItem().getName() == newItem.getName()) {
-                slot.removeQuantity(i);
+            if (stack_ == stack) {
+                stack.removeQuantity(1);
 
-                if (slot.getQuantity() <= 0) {
+                if (stack.getQuantity() <= 0) {
                     inventory.remove(i);
                 }
                 return;

@@ -11,15 +11,13 @@ public class Pet {
         this.energy = 50;
     }
 
-    public String feed() {
-        int oldHunger = hunger;
-        hunger = clamp(hunger + 20);
+    public boolean feed(int feedAmount) {
+        if(hunger >= 100)
+            return false;
+
+        hunger = clamp(hunger + feedAmount);
         energy = clamp(energy + 10);
-        
-        if (hunger == 100 && oldHunger < 100) {
-            return name + " is now completely full!";
-        }
-        return "";
+        return true;
     }
 
     public String giveWater() {

@@ -9,7 +9,8 @@ public abstract class Item {
         this.description = description;
     }
 
-    public abstract void use(Pet pet);
+    // true if successful, else false
+    public abstract boolean use(Pet pet);
 
     public String getName() { return name; }
     public int getValue() { return value; }
