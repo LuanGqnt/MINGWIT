@@ -35,9 +35,8 @@ public class InventoryPanel extends JPanel {
         setPreferredSize(new Dimension(cols * 84 + 32, rows * 84 + 80));
         setBackground(new Color(30, 33, 36, 240));
         setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(30, 20, 36, 240), 2),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+                BorderFactory.createLineBorder(new Color(30, 20, 36, 240), 2),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
         // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
@@ -75,11 +74,11 @@ public class InventoryPanel extends JPanel {
 
         actionButtonPanel.add(sellButton);
         actionButtonPanel.add(useButton);
-        
+
         statusLabel = new JLabel("Click a slot to inspect", SwingConstants.LEFT);
         statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
         statusLabel.setForeground(new Color(200, 205, 210));
-        
+
         bottomPanel.add(statusLabel);
         bottomPanel.add(actionButtonPanel);
 
@@ -91,9 +90,9 @@ public class InventoryPanel extends JPanel {
     }
 
     private void sellClicked() {
-        if(selectedStack != null) {
+        if (selectedStack != null) {
             player.addCoins(selectedStack.getItem().getValue());
-
+            SoundManager.playSfx("../assets/sfx/kaching.wav", 0.0f);
             statusLabel.setText(selectedStack.getItem().getName() + " sold!");
             player.removeItemStackQuantity(selectedStack);
 
@@ -105,11 +104,13 @@ public class InventoryPanel extends JPanel {
     }
 
     private void useClicked() {
-        if(selectedStack == null) return;
+        if (selectedStack == null)
+            return;
 
         boolean success = selectedStack.use(pet);
 
-        if(!success) return;
+        if (!success)
+            return;
 
         statusLabel.setText(selectedStack.getItem().getName() + " used!");
         player.removeItemStackQuantity(selectedStack);
@@ -119,7 +120,6 @@ public class InventoryPanel extends JPanel {
         if (onInventoryChanged != null) {
             onInventoryChanged.run();
         }
-
 
     }
 
@@ -144,8 +144,8 @@ public class InventoryPanel extends JPanel {
 
             if (stack != null && stack.getQuantity() > 0) {
                 slotButton.setText("<html><center>" + stack.getItem().getName()
-                + "<br><font color='#AAAAAA'>x" + stack.getQuantity() + "</font></center></html>");
-                
+                        + "<br><font color='#AAAAAA'>x" + stack.getQuantity() + "</font></center></html>");
+
                 // Button clicked
                 slotButton.addActionListener(e -> {
                     selectedStack = stack;
@@ -153,7 +153,7 @@ public class InventoryPanel extends JPanel {
                     actionButtonPanel.setVisible(true);
                 });
             } else {
-                
+
                 slotButton.setText("");
                 slotButton.addActionListener(e -> {
                     selectedStack = null;

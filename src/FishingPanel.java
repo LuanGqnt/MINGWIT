@@ -59,6 +59,7 @@ public class FishingPanel extends JPanel {
 
     private void handleCanvasClick(int mouseX_, int mouseY_) {
         if (currentState == FishingState.WAITING_FOR_CAST) {
+            SoundManager.playSfx("../assets/sfx/fishing_rod_woosh.wav", 0.0f);
             currentState = FishingState.WAITING_FOR_BITE;
             statusMessage = "Line cast! Waiting for a bite...";
             mouseX = mouseX_;
@@ -102,7 +103,7 @@ public class FishingPanel extends JPanel {
         currentState = FishingState.WAITING_FOR_CAST;
 
         player.addItem(catchedFish);
-
+        SoundManager.playSfx("../assets/sfx/fishing_catch.wav", -15.0f);
         repaint();
     }
 
@@ -119,7 +120,7 @@ public class FishingPanel extends JPanel {
             return new Fish("Golden Fish", 80, "Rare", 30, "Rare");
         } else if (roll < 98) {
             return new Fish("Diamond Fish", 180, "Epic", 30, "Epic");
-        } else {    
+        } else {
             return new Fish("Rainbow Fish", 400, "Legendary", 50, "Legendary");
         }
     }
