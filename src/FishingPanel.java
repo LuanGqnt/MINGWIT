@@ -14,10 +14,11 @@ public class FishingPanel extends JPanel {
         WAITING_FOR_BITE,
         REELING
     }
+
     private FishingState currentState = FishingState.WAITING_FOR_CAST;
 
     private String statusMessage = "Click anywhere on the water to cast your line!";
-    
+
     private Timer biteTimer;
 
     private int mouseX, mouseY;
@@ -40,6 +41,7 @@ public class FishingPanel extends JPanel {
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> {
             resetFishingState();
+            SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -5.0f);
             SceneManager.goTo("GAME");
         });
 
@@ -66,7 +68,7 @@ public class FishingPanel extends JPanel {
 
             // Milliseconds
             int waitTime = 1000 + random.nextInt(3000);
-            
+
             if (biteTimer != null && biteTimer.isRunning()) {
                 biteTimer.stop();
             }
@@ -76,14 +78,13 @@ public class FishingPanel extends JPanel {
             });
             biteTimer.setRepeats(false);
             biteTimer.start();
-        } 
-        else if (currentState == FishingState.WAITING_FOR_BITE) {
-            if (biteTimer != null) biteTimer.stop();
+        } else if (currentState == FishingState.WAITING_FOR_BITE) {
+            if (biteTimer != null)
+                biteTimer.stop();
             statusMessage = "You reeled in too early and scared the fish away! Click water to cast again.";
             currentState = FishingState.WAITING_FOR_CAST;
             repaint();
-        }
-        else if (currentState == FishingState.REELING) {
+        } else if (currentState == FishingState.REELING) {
             catchFish();
         }
     }
@@ -119,13 +120,14 @@ public class FishingPanel extends JPanel {
             return new Fish("Golden Fish", 80, "Rare", "Rare");
         } else if (roll < 98) {
             return new Fish("Diamond Fish", 180, "Epic", "Epic");
-        } else {    
+        } else {
             return new Fish("Rainbow Fish", 400, "Legendary", "Legendary");
         }
     }
 
     private void resetFishingState() {
-        if (biteTimer != null) biteTimer.stop();
+        if (biteTimer != null)
+            biteTimer.stop();
         currentState = FishingState.WAITING_FOR_CAST;
         statusMessage = "Click anywhere on the water to cast your line!";
     }
@@ -141,9 +143,8 @@ public class FishingPanel extends JPanel {
 
         // Ovean
         GradientPaint oceanGradient = new GradientPaint(
-            0, 0, new Color(13, 71, 161), 
-            0, height, new Color(1, 22, 53)
-        );
+                0, 0, new Color(13, 71, 161),
+                0, height, new Color(1, 22, 53));
         g2d.setPaint(oceanGradient);
         g2d.fillRect(0, 0, width, height);
 
@@ -159,7 +160,7 @@ public class FishingPanel extends JPanel {
         g2d.setFont(new Font("SansSerif", Font.BOLD, 18));
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(statusMessage);
-        
+
         // Backdrop for the status
         g2d.setColor(new Color(0, 0, 0, 100));
         g2d.fillRoundRect((width - textWidth - 40) / 2, height - 100, textWidth + 40, 45, 20, 20);

@@ -33,7 +33,7 @@ public class GamePanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(45, 52, 54));
 
-        petSprite = SpriteLoader.loadImage("../assets/pet_placeholder.jpg");
+        petSprite = SpriteLoader.loadImage("../assets/images/pet_placeholder.jpg");
 
         // Top
         JPanel topHud = new JPanel();
@@ -72,7 +72,8 @@ public class GamePanel extends JPanel {
         feedButton.addActionListener(e -> {
             String msg = pet.feed();
             if (!msg.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
             }
             updateHUD();
             repaint();
@@ -81,7 +82,8 @@ public class GamePanel extends JPanel {
         waterButton.addActionListener(e -> {
             String msg = pet.giveWater();
             if (!msg.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
             }
             updateHUD();
             repaint();
@@ -90,13 +92,17 @@ public class GamePanel extends JPanel {
         medicineButton.addActionListener(e -> {
             String msg = pet.giveMedicine(null); // where the medication will be passed in the future
             if (!msg.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, msg, "Max Stat!",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
             }
             updateHUD();
             repaint();
         });
 
-        fishingButton.addActionListener(e -> SceneManager.goTo("FISHING"));
+        fishingButton.addActionListener(e -> {
+            SoundManager.playMusic("../assets/music/fishing_theme.wav", -5.0f);
+            SceneManager.goTo("FISHING");
+        });
 
         inventoryButton.addActionListener(e -> toggleInventory());
 
@@ -125,8 +131,9 @@ public class GamePanel extends JPanel {
     }
 
     public void updateHUD() {
-        statusLabel.setText(String.format("Coins: %d  |  Pet: %s  |  Hunger: %d/100  |  Hydration: %d/100  |  Energy: %d/100",
-                player.getCoins(), pet.getName(), pet.getHunger(), pet.getHydration(), pet.getEnergy()));
+        statusLabel.setText(
+                String.format("Coins: %d  |  Pet: %s  |  Hunger: %d/100  |  Hydration: %d/100  |  Energy: %d/100",
+                        player.getCoins(), pet.getName(), pet.getHunger(), pet.getHydration(), pet.getEnergy()));
     }
 
     private JButton createDockButton(String text) {

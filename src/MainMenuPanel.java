@@ -20,6 +20,7 @@ public class MainMenuPanel extends JPanel {
 
     public interface MenuListener {
         void onPlayClicked();
+
         void onSettingsClicked();
     }
 
@@ -27,10 +28,12 @@ public class MainMenuPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(35, 39, 42));
 
-        bgSprite = SpriteLoader.loadImage("../assets/main_menu_background.png");
-        startButtonSprite = SpriteLoader.loadImage("../assets/start_button.png");
-        settingsSprite = SpriteLoader.loadImage("../assets/settings_button.png");
-        exitSprite = SpriteLoader.loadImage("../assets/exit_button.png");
+        SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -5.0f); // Play BGM at -10 dB
+
+        bgSprite = SpriteLoader.loadImage("../assets/images/main_menu_background.png");
+        startButtonSprite = SpriteLoader.loadImage("../assets/images/start_button.png");
+        settingsSprite = SpriteLoader.loadImage("../assets/images/settings_button.png");
+        exitSprite = SpriteLoader.loadImage("../assets/images/exit_button.png");
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setOpaque(false);
@@ -50,11 +53,13 @@ public class MainMenuPanel extends JPanel {
         buttonPanel.add(exitButton, gbc);
 
         playButton.addActionListener(e -> {
-            if (listener != null) listener.onPlayClicked();
+            if (listener != null)
+                listener.onPlayClicked();
         });
 
         settingsButton.addActionListener(e -> {
-            if (listener != null) listener.onSettingsClicked();
+            if (listener != null)
+                listener.onSettingsClicked();
         });
 
         exitButton.addActionListener(e -> {
