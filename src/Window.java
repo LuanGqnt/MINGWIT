@@ -16,6 +16,7 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
     public Window() {
         setTitle("MINGWIT");
         setSize(800, 600);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -43,8 +44,8 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
 
     @Override
     public void onPlayClicked() {
-        System.out.println("Play Game clicked!");
         gamePanel.updateHUD();
+        SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -10.0f);
         SceneManager.goTo("GAME");
     }
 
