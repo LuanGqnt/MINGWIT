@@ -41,7 +41,7 @@ public class FishingPanel extends JPanel {
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> {
             resetFishingState();
-            SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -5.0f);
+            SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -10.0f);
             SceneManager.goTo("GAME");
         });
 

@@ -28,7 +28,7 @@ public class MainMenuPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(35, 39, 42));
 
-        SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -5.0f); // Play BGM at -10 dB
+        SoundManager.playMusic("../assets/music/main_menu_theme.wav", -10.0f); // Play BGM at -10 dB
 
         bgSprite = SpriteLoader.loadImage("../assets/images/main_menu_background.png");
         startButtonSprite = SpriteLoader.loadImage("../assets/images/start_button.png");
@@ -53,16 +53,20 @@ public class MainMenuPanel extends JPanel {
         buttonPanel.add(exitButton, gbc);
 
         playButton.addActionListener(e -> {
+            SoundManager.playSfx("../assets/sfx/button_click.wav");
             if (listener != null)
                 listener.onPlayClicked();
+
         });
 
         settingsButton.addActionListener(e -> {
+            SoundManager.playSfx("../assets/sfx/button_click.wav");
             if (listener != null)
                 listener.onSettingsClicked();
         });
 
         exitButton.addActionListener(e -> {
+            SoundManager.playSfx("../assets/sfx/button_click.wav");
             System.exit(0);
         });
 
@@ -97,7 +101,7 @@ public class MainMenuPanel extends JPanel {
                 @Override
                 public void mouseEntered(java.awt.event.MouseEvent e) {
                     button.setIcon(hoverIcon);
-                    // TODO: Also play a sound
+                    SoundManager.playSfx("../assets/sfx/button_hover.wav");
                 }
 
                 @Override

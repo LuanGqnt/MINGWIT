@@ -45,7 +45,7 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
     @Override
     public void onPlayClicked() {
         gamePanel.updateHUD();
-        SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -5.0f);
+        SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -10.0f);
         SceneManager.goTo("GAME");
     }
 
