@@ -103,7 +103,7 @@ public class FishingPanel extends JPanel {
         currentState = FishingState.WAITING_FOR_CAST;
 
         player.addItem(catchedFish);
-        SoundManager.playSfx("../assets/sfx/fishing_catch.wav", -15.0f);
+        SoundManager.playSfx("../assets/sfx/fishing_catch.wav", -10.0f);
         repaint();
     }
 
