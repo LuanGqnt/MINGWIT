@@ -16,6 +16,7 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
     public Window() {
         setTitle("MINGWIT");
         setSize(800, 600);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
