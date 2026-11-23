@@ -29,6 +29,10 @@ public class MouseHitbox {
         return this;
     }
 
+    public boolean isClickBlocked() {
+        return blockClicks != null && blockClicks.getAsBoolean();
+    }
+
     public Rectangle getBounds() {
         return bounds;
     }
@@ -65,6 +69,9 @@ public class MouseHitbox {
     }
 
     public boolean handleClick(Point p) {
+        if (isClickBlocked())
+            return false;
+        
         if (contains(p)) {
             if (onClick != null) {
                 onClick.run();
@@ -95,7 +102,7 @@ public class MouseHitbox {
                 boolean changed = false;
 
                 for (MouseHitbox box : allBoxes) {
-                    boolean nowHovering = box.contains(p);
+                    boolean nowHovering = box.contains(p) && !box.isClickBlocked();
                     if (nowHovering != box.hovering) {
                         box.hovering = nowHovering;
                         changed = true;
@@ -135,10 +142,6 @@ public class MouseHitbox {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (blockClicks != null && blockClicks.getAsBoolean()) {
-                    return;
-                }
-
                 Point p = e.getPoint();
                 for (MouseHitbox box : allBoxes) {
                     if (box.handleClick(p)) {

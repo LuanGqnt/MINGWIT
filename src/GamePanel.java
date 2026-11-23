@@ -1,13 +1,11 @@
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -51,7 +49,7 @@ public class GamePanel extends JPanel {
         doorHitbox = new MouseHitbox(510, 60, 200, 260, () -> {
             SoundManager.playMusic("../assets/music/fishing_theme.wav", -10.0f);
             SceneManager.goTo("FISHING");
-        });
+        }).setBlockClicks(() -> inventoryPanel.isVisible());
 
         inventoryBagHitbox = new MouseHitbox(20, 450, 90, 100, () -> {
             toggleInventory();
@@ -62,13 +60,6 @@ public class GamePanel extends JPanel {
         );
         addMouseListener(hitboxMouse);
         addMouseMotionListener(hitboxMouse);
-
-        // Top
-        // JPanel topHud = new JPanel();
-        // topHud.setBackground(new Color(30, 39, 46));
-        // topHud.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 20, 10, 20));
-
-        // add(topHud, BorderLayout.NORTH);
 
         // Center
         inventoryPanel = new InventoryPanel(player, pet, 3, 5, () -> {
