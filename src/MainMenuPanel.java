@@ -18,6 +18,8 @@ public class MainMenuPanel extends JPanel {
     private BufferedImage settingsSprite;
     private BufferedImage exitSprite;
 
+    private SpriteAnimation catAnimation;
+
     public interface MenuListener {
         void onPlayClicked();
 
@@ -34,7 +36,22 @@ public class MainMenuPanel extends JPanel {
         startButtonSprite = SpriteLoader.loadImage("../assets/images/start_button.png");
         settingsSprite = SpriteLoader.loadImage("../assets/images/settings_button.png");
         exitSprite = SpriteLoader.loadImage("../assets/images/exit_button.png");
-
+        catAnimation = SpriteLoader.loadAnimation(
+            // "../assets/images/cat_no1.png",
+            "../assets/images/cat_menu.png",
+            96,
+            96,
+            10,
+            220,
+            true,
+            96,
+            96,
+            this
+        );
+        if (catAnimation != null) {
+            catAnimation.play();
+        }
+      
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setOpaque(false);
 
@@ -119,6 +136,10 @@ public class MainMenuPanel extends JPanel {
         super.paintComponent(g);
         if (bgSprite != null) {
             g.drawImage(bgSprite, 0, 0, getWidth(), getHeight(), this);
+        }
+
+        if (catAnimation != null) {
+            catAnimation.draw(g, 500, 420);
         }
     }
 }
