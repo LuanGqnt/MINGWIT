@@ -1,4 +1,9 @@
-public class Pet {
+import java.io.Serializable;
+
+public class Pet implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String name;
     private int hunger; // 0 = starving, 100 = full
     private int hydration; // 0 = dehydrated, 100 = fully hydrated

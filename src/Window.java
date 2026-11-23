@@ -1,4 +1,5 @@
 import java.awt.CardLayout;
+import javax.swing.Timer;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -8,10 +9,13 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
     private CardLayout cardLayout;
     private JPanel mainContainer;
 
-    private Player player;
-    private Pet pet;
+    private SaveFile[] saves;
+    private SavePanel savePanel;
+    private Timer autosaveTimer;
+    private PetCreationPanel petCreationPanel;
 
     private GamePanel gamePanel;
+    private FishingPanel fishingPanel;
 
     public Window() {
         setTitle("MINGWIT");
@@ -20,33 +24,48 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        player = new Player("Player 1");
-        // Hard coded pa to, will update soon
-        pet = new Pet("Coco");
-
         cardLayout = new CardLayout();
         mainContainer = new JPanel(cardLayout);
-
         SceneManager.init(cardLayout, mainContainer);
 
         MainMenuPanel mainMenuPanel = new MainMenuPanel(this);
-        FishingPanel fishingPanel = new FishingPanel(player);
 
-        gamePanel = new GamePanel(player, pet);
+        saves = SaveStorage.loadAll();
+
+        savePanel = new SavePanel(
+            saves,
+            this::onSlotSelected,
+            () -> SceneManager.goTo("MENU")
+        );
+
+        petCreationPanel = new PetCreationPanel(
+            this::onPetCreated,
+            () -> {
+                savePanel.refresh();
+                SceneManager.goTo("SAVES");
+            }
+        );
 
         mainContainer.add(mainMenuPanel, "MENU");
-        mainContainer.add(gamePanel, "GAME");
-        mainContainer.add(fishingPanel, "FISHING");
+        mainContainer.add(savePanel, "SAVES");
+        mainContainer.add(petCreationPanel, "PET_CREATION");
 
         add(mainContainer);
-        cardLayout.show(mainContainer, "MENU");
+        SceneManager.goTo("MENU");
+
+        startAutosaveTimer();
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                SaveStorage.saveAll(saves);
+            }
+        });
     }
 
     @Override
     public void onPlayClicked() {
-        gamePanel.updateHUD();
-        SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -10.0f);
-        SceneManager.goTo("GAME");
+        savePanel.refresh();
+        SceneManager.goTo("SAVES");
     }
 
     @Override
@@ -54,4 +73,55 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
         System.out.println("Vet Clinic clicked!");
         JOptionPane.showMessageDialog(this, "Vet & Medication screen coming soon.");
     }
+
+    private void onSlotSelected(int slotIndex) {
+        SaveFile selected = saves[slotIndex];
+        if (selected == null || selected.isEmpty()) {
+            petCreationPanel.setSlotIndex(slotIndex);
+            SceneManager.goTo("PET_CREATION");
+        } else {
+            loadGame(selected);
+        }
+    }
+
+    private void onPetCreated(int slotIndex, String petName) {
+        Player player = new Player("Player " + (slotIndex + 1));
+        Pet pet = new Pet(petName);
+
+        saves[slotIndex] = new SaveFile(player, pet);
+        SaveStorage.saveAll(saves);
+        loadGame(saves[slotIndex]);
+    }
+
+    private void loadGame(SaveFile save) {
+        Player player = save.getPlayer();
+        Pet pet = save.getPet();
+
+        if (gamePanel != null) {
+            mainContainer.remove(gamePanel);
+        }
+        if (fishingPanel != null) {
+            mainContainer.remove(fishingPanel);
+        }
+
+        gamePanel = new GamePanel(player, pet);
+        fishingPanel = new FishingPanel(player);
+
+        mainContainer.add(gamePanel, "GAME");
+        mainContainer.add(fishingPanel, "FISHING");
+
+        gamePanel.updateHUD();
+        SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -10.0f);
+        SceneManager.goTo("GAME");
+    }
+
+    private void startAutosaveTimer() {
+        if (autosaveTimer != null && autosaveTimer.isRunning()) {
+            return;
+        }
+
+        autosaveTimer = new Timer(10_000, e -> SaveStorage.saveAll(saves));
+        autosaveTimer.start();
+    }
+
 }
