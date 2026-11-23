@@ -110,7 +110,6 @@ public class Window extends JFrame implements MainMenuPanel.MenuListener {
         mainContainer.add(gamePanel, "GAME");
         mainContainer.add(fishingPanel, "FISHING");
 
-        gamePanel.updateHUD();
         SoundManager.playMusic("../assets/music/mingwit_main_theme.wav", -10.0f);
         SceneManager.goTo("GAME");
     }
