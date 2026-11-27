@@ -4,6 +4,8 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.border.Border;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -65,11 +67,12 @@ public class GamePanel extends JPanel {
         inventoryPanel = new InventoryPanel(player, pet, 3, 5, () -> {
             repaint();
         });
+        inventoryPanel.setBounds(150, 90, 500, 400);
         inventoryPanel.setVisible(false);
 
-        JPanel centerPanel = new JPanel(new GridBagLayout());
+        JPanel centerPanel = new JPanel(new BorderLayout()); // or GridBagLayout with GridBagConstraints.BOTH
         centerPanel.setOpaque(false);
-        centerPanel.add(inventoryPanel);
+        centerPanel.add(inventoryPanel, BorderLayout.CENTER);
 
         add(centerPanel, BorderLayout.CENTER);
 
@@ -100,7 +103,7 @@ public class GamePanel extends JPanel {
     private void toggleInventory() {
         boolean nextState = !inventoryPanel.isVisible();
 
-        inventoryPanel.refresh();
+        // inventoryPanel.refresh();
         inventoryPanel.setVisible(nextState);
         inventoryPanel.revalidate();
         inventoryPanel.repaint();
